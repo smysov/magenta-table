@@ -8,7 +8,7 @@
           </thead>
           <tbody>
             <table-row
-              v-for="user of users"
+              v-for="user of filteredUsers"
               :key="`${user.name}-${user.surname}`"
               v-bind="{ user, fields }"
             />
@@ -20,8 +20,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-import API_URL_SMALL from '@/config/api';
 
 import TableHeader from '@/components/TableHeader.vue';
 import TableRow from '@/components/TableBody.vue';
@@ -32,11 +30,15 @@ export default {
     TableHeader,
     TableRow,
   },
-  computed: {
-    ...mapGetters(['fields', 'users']),
-  },
-  mounted() {
-    this.$store.dispatch('getUsers', API_URL_SMALL);
+  props: {
+    filteredUsers: {
+      type: Array,
+      required: true,
+    },
+    fields: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>
@@ -50,9 +52,10 @@ export default {
   }
 
   .table-scroll {
-    height: 89vh;
-    overflow: scroll;
-    width: 868px;
+    // min-height: 100%;
+    max-height: 89vh;
+    overflow: auto;
+    width: 668px;
     margin: 0 auto;
   }
 </style>

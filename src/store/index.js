@@ -44,6 +44,7 @@ export default new Vuex.Store({
         key: 'id',
       },
     ],
+    searchQuery: '',
   },
   mutations: {
     SET_USERS(state, users) {
@@ -54,6 +55,9 @@ export default new Vuex.Store({
           .join('');
       });
       state.users = users;
+    },
+    SET_SEARCH(state, name) {
+      state.searchQuery = name;
     },
   },
   actions: {
@@ -77,9 +81,18 @@ export default new Vuex.Store({
         }
       }
     },
+    setSearch({ commit }, name) {
+      commit('SET_SEARCH', name);
+    },
   },
   getters: {
     users: ({ users }) => users,
     fields: ({ fields }) => fields,
+    filteredUsers({ users, searchQuery }) {
+      if (!searchQuery) {
+        return users;
+      }
+      return users.filter((user) => user.name.toLowerCase().includes(searchQuery));
+    },
   },
 });
