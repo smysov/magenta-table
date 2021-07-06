@@ -44,6 +44,9 @@ export default new Vuex.Store({
         key: 'id',
       },
     ],
+    searchQuery: '',
+    fromQuery: '',
+    toQuery: '',
   },
   mutations: {
     SET_USERS(state, users) {
@@ -54,6 +57,21 @@ export default new Vuex.Store({
           .join('');
       });
       state.users = users;
+    },
+    SET_SEARCH(state, value) {
+      state.searchQuery = value;
+    },
+    SET_FROM_QUERY(state, value) {
+      state.fromQuery = value;
+    },
+    SET_TO_QUERY(state, value) {
+      state.toQuery = value;
+    },
+    SEARCH_USERS(state) {
+      state.users = state.users.filter((user) => user.name.toLowerCase().includes(state.searchQuery));
+    },
+    SET_PERIOD(state) {
+      state.users = state.users.filter((user) => user.date >= state.fromQuery && user.date <= state.toQuery);
     },
   },
   actions: {
@@ -75,6 +93,35 @@ export default new Vuex.Store({
         if (e.response && e.response.status === 403) {
           console.log('У Вас нет прав. Получите права и повторите попытку!');
         }
+      }
+    },
+    setSearch({ commit }, searchQuery) {
+      commit('SET_SEARCH', searchQuery);
+    },
+    setFromQuery({ commit }, fromQuery) {
+      commit('SET_FROM_QUERY', fromQuery);
+    },
+    setToQuery({ commit }, toQuery) {
+      commit('SET_TO_QUERY', toQuery);
+    },
+    async searchUsers({ state, commit, dispatch }, url) {
+      await dispatch('getUsers', url);
+      if (!state.searchQuery && state.fromQuery && state.toQuery) {
+        dispatch('setPeriod');
+      } else if (!state.searchQuery) {
+        dispatch('getUsers', url);
+      } else {
+        commit('SEARCH_USERS');
+      }
+    },
+    async setPeriod({ state, commit, dispatch }, url) {
+      await dispatch('getUsers', url);
+      if (state.searchQuery && !state.fromQuery && !state.toQuery) {
+        dispatch('searchUsers');
+      } else if (!state.fromQuery && !state.toQuery) {
+        dispatch('getUsers', url);
+      } else {
+        commit('SET_PERIOD');
       }
     },
   },
