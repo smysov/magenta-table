@@ -47,6 +47,7 @@ export default new Vuex.Store({
     searchQuery: '',
     fromQuery: '',
     toQuery: '',
+    isLoading: false,
   },
   mutations: {
     SET_USERS(state, users) {
@@ -73,10 +74,14 @@ export default new Vuex.Store({
     SET_PERIOD(state) {
       state.users = state.users.filter((user) => user.date >= state.fromQuery && user.date <= state.toQuery);
     },
+    SET_IS_LOADING(state, bool) {
+      state.isLoading = bool;
+    },
   },
   actions: {
-    async getUsers({ commit }, url) {
+    async getUsers({ dispatch, commit }, url) {
       try {
+        dispatch('setIsLoading', true);
         const response = await fetch(url);
         if (response.status >= 300) {
           const error = new Error(response.statusText);
@@ -93,6 +98,8 @@ export default new Vuex.Store({
         if (e.response && e.response.status === 403) {
           console.log('У Вас нет прав. Получите права и повторите попытку!');
         }
+      } finally {
+        dispatch('setIsLoading', false);
       }
     },
     setSearch({ commit }, searchQuery) {
@@ -124,9 +131,16 @@ export default new Vuex.Store({
         commit('SET_PERIOD');
       }
     },
+    setIsLoading({ commit }, bool) {
+      commit('SET_IS_LOADING', bool);
+    },
   },
   getters: {
     users: ({ users }) => users,
     fields: ({ fields }) => fields,
+    searchQuery: ({ searchQuery }) => searchQuery,
+    fromQuery: ({ fromQuery }) => fromQuery,
+    toQuery: ({ toQuery }) => toQuery,
+    isLoading: ({ isLoading }) => isLoading,
   },
 });

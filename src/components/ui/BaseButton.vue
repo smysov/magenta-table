@@ -38,39 +38,10 @@ export default {
       opacity: 0.6;
     }
     &_red {
+      display: block;
+      margin: 20px auto 0;
       color: red;
       border-color: red;
-    }
-    &_green {
-      color: green;
-      border-color: green;
-    }
-    &_clear {
-      background: red;
-      color: #fff;
-      border-color: red;
-      &:active,
-      &:focus {
-        background: crimson;
-        color: #fff;
-        border-color: crimson;
-        border-radius: 5px;
-      }
-    }
-    &_adding {
-      color: #fff;
-      border-color: green;
-      background: green;
-      &:focus {
-        color: green;
-        border-color: green;
-        background: transparent;
-      }
-      &:active {
-        transform: scale(0.98);
-        color: #013d01;
-        border-color: #013d01;
-      }
     }
   }
 </style>
