@@ -2,8 +2,8 @@
   <div class="wrapper__content">
     <router-link
       class="navigation"
-      to='/customers'
-    >Клиенты</router-link>
+      to='/'
+    >Пользователи</router-link>
     <table-actions
       @searchUsersByName="searchUsersByName"
       @performSearchByPeriod="performSearchByPeriod"
@@ -18,7 +18,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { API_URL_SMALL } from '@/config/api';
+import { API_URL_BIG } from '@/config/api';
 
 import MainTable from '@/components/Table.vue';
 import TableActions from '@/components/TableActions.vue';
@@ -35,14 +35,14 @@ export default {
     ...mapGetters(['fields', 'users', 'searchQuery']),
   },
   mounted() {
-    this.$store.dispatch('getUsers', API_URL_SMALL);
+    this.$store.dispatch('getUsers', API_URL_BIG);
   },
   methods: {
     searchUsersByName() {
-      this.$store.dispatch('searchUsers', API_URL_SMALL);
+      this.$store.dispatch('searchUsers', API_URL_BIG);
     },
     performSearchByPeriod() {
-      this.$store.dispatch('setPeriod', API_URL_SMALL);
+      this.$store.dispatch('setPeriod', API_URL_BIG);
     },
   },
 };
