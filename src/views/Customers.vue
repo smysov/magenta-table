@@ -7,6 +7,7 @@
     <table-actions
       @searchUsersByName="searchUsersByName"
       @performSearchByPeriod="performSearchByPeriod"
+      @resetInputs="resetInputs"
     />
     <preloader v-show="isLoading" />
     <main-table
@@ -46,6 +47,9 @@ export default {
     },
     performSearchByPeriod() {
       this.$store.dispatch('setPeriod', API_URL_BIG);
+    },
+    resetInputs() {
+      this.$store.dispatch('getUsers', API_URL_BIG);
     },
   },
 };
