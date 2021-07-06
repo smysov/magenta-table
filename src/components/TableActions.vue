@@ -14,6 +14,11 @@
           v-bind="{fromQuery, toQuery}"
         />
       </div>
+      <base-button
+        view="base-button_red"
+        textButton="Сбросить"
+        @click.native="resetInputs"
+      />
     </div>
   </section>
 </template>
@@ -23,12 +28,14 @@ import Search from '@/components/ui/Search.vue';
 import SearchByPeriod from '@/components/ui/SearchByPeriod.vue';
 
 import { mapGetters } from 'vuex';
+import BaseButton from './ui/BaseButton.vue';
 
 export default {
   name: 'TableActions',
   components: {
     Search,
     SearchByPeriod,
+    BaseButton,
   },
   computed: {
     ...mapGetters(['searchQuery', 'fromQuery', 'toQuery']),
@@ -49,6 +56,13 @@ export default {
     performSearchByPeriod() {
       if (!this.fromQuery || !this.toQuery) return;
       this.$emit('performSearchByPeriod');
+    },
+    resetInputs() {
+      if (!this.searchQuery && !this.fromQuery && !this.toQuery) return;
+      this.$store.dispatch('setSearch', '');
+      this.$store.dispatch('setFromQuery', '');
+      this.$store.dispatch('setToQuery', '');
+      this.$emit('resetInputs');
     },
   },
 };

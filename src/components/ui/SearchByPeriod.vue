@@ -81,6 +81,7 @@ export default {
       border: 2px solid #000;
       outline: none;
       transition: all 0.3s ease-in;
+      background: none;
     }
   }
 </style>
