@@ -3,10 +3,16 @@
     <div class="container">
       <div class="actions__inner">
         <search
-          @input="inputSearch"
-          @resetValue="resetValue"
+          @searchInput="performSearch"
+          @searchUsersByName="searchUsersByName"
+          :searchQuery="searchQuery"
         />
-        <search-by-period @input="inputSerchByPeriod" />
+        <search-by-period
+          @fromInput="formInput"
+          @toInput="toInput"
+          @performSearchByPeriod="performSearchByPeriod"
+          v-bind="{fromQuery, toQuery}"
+        />
       </div>
     </div>
   </section>
@@ -16,21 +22,33 @@
 import Search from '@/components/ui/Search.vue';
 import SearchByPeriod from '@/components/ui/SearchByPeriod.vue';
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'TableActions',
   components: {
     Search,
     SearchByPeriod,
   },
+  computed: {
+    ...mapGetters(['searchQuery', 'fromQuery', 'toQuery']),
+  },
   methods: {
-    inputSearch(value) {
-      this.$emit('performSearchUsers', value.toLowerCase().trim());
+    performSearch(value) {
+      this.$store.dispatch('setSearch', value);
     },
-    inputSerchByPeriod(from, to) {
-      this.$emit('inputSerchByPeriod', from, to);
+    searchUsersByName() {
+      this.$emit('searchUsersByName');
     },
-    resetValue() {
-      this.$emit('resetValue');
+    formInput(value) {
+      this.$store.dispatch('setFromQuery', value);
+    },
+    toInput(value) {
+      this.$store.dispatch('setToQuery', value);
+    },
+    performSearchByPeriod() {
+      if (!this.fromQuery || !this.toQuery) return;
+      this.$emit('performSearchByPeriod');
     },
   },
 };
@@ -41,7 +59,7 @@ export default {
     &__inner {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-end;
     }
   }
 </style>

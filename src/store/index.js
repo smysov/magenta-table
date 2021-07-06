@@ -128,5 +128,8 @@ export default new Vuex.Store({
   getters: {
     users: ({ users }) => users,
     fields: ({ fields }) => fields,
+    searchQuery: ({ searchQuery }) => searchQuery,
+    fromQuery: ({ fromQuery }) => fromQuery,
+    toQuery: ({ toQuery }) => toQuery,
   },
 });

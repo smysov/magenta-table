@@ -1,15 +1,15 @@
 <template>
   <form
     class="search"
-    @submit.prevent="performSearch"
+    @submit.prevent="searchUsersByName"
   >
-    <base-input
-      @resetValue="resetValue"
-      idFor="search"
-      v-model="searchQuery"
+    <input
+      @input="searchInput"
+      :value="searchQuery"
+      type="text"
+      class="search__input"
       placeholder="Найти пользователей"
-      className="base-input_search"
-    />
+    >
     <button
       class="search__submit"
       aria-label="найти пользователей"
@@ -19,25 +19,21 @@
 </template>
 
 <script>
-import BaseInput from '@/components/ui/BaseInput.vue';
 
 export default {
   name: 'Search',
-  components: {
-    BaseInput,
-  },
-  data() {
-    return {
-      searchQuery: '',
-    };
+  props: {
+    searchQuery: {
+      type: String,
+      required: true,
+    },
   },
   methods: {
-    performSearch() {
-      this.$emit('input', this.searchQuery);
+    searchInput(e) {
+      this.$emit('searchInput', e.target.value);
     },
-    resetValue() {
-      this.searchQuery = '';
-      this.$emit('resetValue');
+    searchUsersByName() {
+      this.$emit('searchUsersByName');
     },
   },
 };
@@ -47,6 +43,19 @@ export default {
   .search {
     display: flex;
     align-items: flex-end;
+
+    &__input {
+      font-size: 16px;
+      font-weight: 500;
+      color: #000;
+      padding: 5px;
+      min-width: 220px;
+      border: 2px solid #000;
+      border-right: none;
+      outline: none;
+      transition: all 0.3s ease-in;
+    }
+
     &__submit {
       position: relative;
       background: none;
