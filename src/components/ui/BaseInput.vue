@@ -78,6 +78,13 @@ export default {
     border: 2px solid #000;
     outline: none;
     transition: all 0.3s ease-in;
+
+    &_period {
+      & + .base-close {
+        display: none;
+      }
+    }
+
     &_search {
       border-right: none;
       &:hover {
@@ -90,9 +97,9 @@ export default {
   }
   .base-label {
     font-weight: 700;
-    text-transform: capitalize;
     padding-left: 5px;
   }
+
   .base-close {
     &::before {
       position: absolute;

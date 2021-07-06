@@ -8,7 +8,7 @@
           </thead>
           <tbody>
             <table-row
-              v-for="user of filteredUsers"
+              v-for="user of users"
               :key="`${user.name}-${user.surname}`"
               v-bind="{ user, fields }"
             />
@@ -31,7 +31,7 @@ export default {
     TableRow,
   },
   props: {
-    filteredUsers: {
+    users: {
       type: Array,
       required: true,
     },
@@ -52,7 +52,6 @@ export default {
   }
 
   .table-scroll {
-    // min-height: 100%;
     max-height: 89vh;
     overflow: auto;
     width: 668px;

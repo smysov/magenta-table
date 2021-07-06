@@ -6,6 +6,7 @@
           @input="inputSearch"
           @resetValue="resetValue"
         />
+        <search-by-period @input="inputSerchByPeriod" />
       </div>
     </div>
   </section>
@@ -13,15 +14,20 @@
 
 <script>
 import Search from '@/components/ui/Search.vue';
+import SearchByPeriod from '@/components/ui/SearchByPeriod.vue';
 
 export default {
   name: 'TableActions',
   components: {
     Search,
+    SearchByPeriod,
   },
   methods: {
     inputSearch(value) {
       this.$emit('performSearchUsers', value.toLowerCase().trim());
+    },
+    inputSerchByPeriod(from, to) {
+      this.$emit('inputSerchByPeriod', from, to);
     },
     resetValue() {
       this.$emit('resetValue');

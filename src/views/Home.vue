@@ -1,9 +1,12 @@
 <template>
   <div class="wrapper__content">
-    <table-actions @performSearchUsers="performSearchUsers" />
+    <table-actions
+      @performSearchUsers="performSearchUsers"
+      @inputSerchByPeriod="inputSerchByPeriod"
+    />
     <main-table
-      v-if="filteredUsers.length"
-      v-bind="{ fields, filteredUsers }"
+      v-if="users.length"
+      v-bind="{ fields, users }"
     />
     <search-message v-else />
   </div>
@@ -23,10 +26,9 @@ export default {
     MainTable,
     TableActions,
     SearchMessage,
-
   },
   computed: {
-    ...mapGetters(['fields', 'filteredUsers']),
+    ...mapGetters(['fields', 'users']),
   },
   mounted() {
     this.$store.dispatch('getUsers', API_URL_SMALL);
@@ -34,6 +36,12 @@ export default {
   methods: {
     performSearchUsers(searchQuery) {
       this.$store.dispatch('setSearch', searchQuery);
+      this.$store.dispatch('searchUsers', API_URL_SMALL);
+    },
+    inputSerchByPeriod(fromQuery, toQuery) {
+      this.$store.dispatch('setFromQuery', fromQuery);
+      this.$store.dispatch('setToQuery', toQuery);
+      this.$store.dispatch('setPeriod', API_URL_SMALL);
     },
   },
 };
